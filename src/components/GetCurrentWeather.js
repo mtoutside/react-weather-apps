@@ -17,21 +17,23 @@ const GetCurrentWeather = ({ position }) => {
       "x-rapidapi-host": apiHost,
     },
   };
-  const [ data, setData ] = useState({
-    base: null,
-    clouds: {},
-    cod: null,
-    coord: {},
-    dt: null,
-    id: null,
-    main: {},
-    name: null,
-    sys: {},
-    timezone: null,
-    visibility: null,
-    weather: [],
-    wind: {}
-  });
+  const [data, setData] = useState([
+    {
+      base: null,
+      clouds: {},
+      cod: null,
+      coord: {},
+      dt: null,
+      id: null,
+      main: {},
+      name: null,
+      sys: {},
+      timezone: null,
+      visibility: null,
+      weather: [],
+      wind: {},
+    },
+  ]);
   const getWeatherApi = () => {
     console.log({ position });
 
@@ -39,8 +41,21 @@ const GetCurrentWeather = ({ position }) => {
       .request(options)
       .then((response) => {
         let d = response.data;
-        console.log(d);
-        setData(d);
+        setData({
+          base: d.base,
+          clouds: d.clouds,
+          cod: d.cod,
+          coord: d.coord,
+          dt: d.dt,
+          id: d.id,
+          main: d.main,
+          name: d.name,
+          sys: d.sys,
+          timezone: d.timezone,
+          visibility: d.visibility,
+          weather: d.weather,
+          wind: d.wind,
+        });
       })
       .catch((error) => {
         console.error(error);
@@ -50,7 +65,14 @@ const GetCurrentWeather = ({ position }) => {
   return (
     <div>
       <button onClick={getWeatherApi}>get weather</button>
-      <div>{data && data.map(value => value)}</div>
+      <div>
+        {data && (
+          <>
+            <p>{data.base}</p>
+            {/* <p>{data.clouds.map(value => value)}</p> */}
+          </>
+        )}
+      </div>
     </div>
   );
 };
