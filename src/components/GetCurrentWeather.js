@@ -10,6 +10,7 @@ const GetCurrentWeather = ({ position }) => {
     params: {
       lat: position.latitude,
       lon: position.longitude,
+      units: "metric",
       lang: "ja",
     },
     headers: {
@@ -17,24 +18,21 @@ const GetCurrentWeather = ({ position }) => {
       "x-rapidapi-host": apiHost,
     },
   };
-  const [data, setData] = useState([
+  const [data, setData] = useState(
     {
-      base: null,
-      clouds: {},
-      cod: null,
-      coord: {},
-      dt: null,
-      id: null,
-      main: {},
-      name: null,
-      sys: {},
-      timezone: null,
-      visibility: null,
-      weather: [],
-      wind: {},
+      feels_like: "",
+      temp: "",
+      temp_max: "",
+      temp_min: "",
+      humidity: "",
+      pressure: "",
+      name: "",
+      condition: "",
+      icon: "",
+      windDeg: "",
+      windSpeed: "",
     },
-  ]);
-  const [weatherIcon, setWeatherIcon] = useState("");
+  );
 
   const getWeatherApi = () => {
     console.log({ position });
@@ -45,21 +43,18 @@ const GetCurrentWeather = ({ position }) => {
         let d = response.data;
         console.log(d);
         setData({
-          base: d.base,
-          clouds: d.clouds,
-          cod: d.cod,
-          coord: d.coord,
-          dt: d.dt,
-          id: d.id,
-          main: d.main,
+          feels_like: d.main.feels_like,
+          temp: d.main.temp,
+          temp_max: d.main.temp_max,
+          temp_min: d.main.temp_min,
+          humidity: d.main.humidity,
+          pressure: d.main.pressure,
           name: d.name,
-          sys: d.sys,
-          timezone: d.timezone,
-          visibility: d.visibility,
-          weather: d.weather,
-          wind: d.wind,
+          condition: d.weather[0].description,
+          icon: d.weather[0].icon,
+          windDeg: d.wind.deg,
+          windSpeed: d.wind.speed,
         });
-        setWeatherIcon(d.weather[0].icon);
       })
       .catch((error) => {
         console.error(error);
@@ -72,12 +67,17 @@ const GetCurrentWeather = ({ position }) => {
       <div>
         {data && (
           <>
-            <p>{data.base}</p>
+            <p>{data.name}</p>
+            <p>{data.condition}</p>
+            <p>風力{data.windSpeed}</p>
+            <ul>
+              {Object.keys(data).map((key, index) => (
+                <li key={index}>{key}: {data[key]}</li>
+              ))}
+            </ul>
           </>
         )}
-        {weatherIcon && (
-          <img src={`http://openweathermap.org/img/wn/${weatherIcon}@2x.png`} alt="" />
-        )}
+        {data.icon && <img src={`http://openweathermap.org/img/wn/${data.icon}@2x.png`} alt="" />}
       </div>
     </div>
   );
