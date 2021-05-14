@@ -18,21 +18,29 @@ const GetCurrentWeather = ({ position }) => {
       "x-rapidapi-host": apiHost,
     },
   };
-  const [data, setData] = useState(
-    {
-      feels_like: "",
-      temp: "",
-      temp_max: "",
-      temp_min: "",
-      humidity: "",
-      pressure: "",
-      name: "",
-      condition: "",
-      icon: "",
-      windDeg: "",
-      windSpeed: "",
-    },
-  );
+  const paramsName = {
+    feels_like: "体感温度",
+    temp: "気温",
+    temp_max: "最高気温",
+    temp_min: "最低気温",
+    humidity: "湿度",
+    pressure: "気圧",
+    windDeg: "風向き",
+    windSpeed: "風速",
+  };
+  const [data, setData] = useState({
+    feels_like: "",
+    temp: "",
+    temp_max: "",
+    temp_min: "",
+    humidity: "",
+    pressure: "",
+    name: "",
+    condition: "",
+    icon: "",
+    windDeg: "",
+    windSpeed: "",
+  });
 
   const getWeatherApi = () => {
     console.log({ position });
@@ -72,7 +80,9 @@ const GetCurrentWeather = ({ position }) => {
             <p>風力{data.windSpeed}</p>
             <ul>
               {Object.keys(data).map((key, index) => (
-                <li key={index}>{key}: {data[key]}</li>
+                <li key={index}>
+                  {paramsName[key]}: {data[key]}
+                </li>
               ))}
             </ul>
           </>
