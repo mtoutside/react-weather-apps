@@ -8,9 +8,9 @@ const GetCurrentWeather = ({ position }) => {
     method: "GET",
     url: "https://community-open-weather-map.p.rapidapi.com/weather",
     params: {
-      q: "London,uk",
       lat: position.latitude,
       lon: position.longitude,
+      lang: "ja",
     },
     headers: {
       "x-rapidapi-key": apiKey,
