@@ -34,6 +34,8 @@ const GetCurrentWeather = ({ position }) => {
       wind: {},
     },
   ]);
+  const [weatherIcon, setWeatherIcon] = useState("");
+
   const getWeatherApi = () => {
     console.log({ position });
 
@@ -41,6 +43,7 @@ const GetCurrentWeather = ({ position }) => {
       .request(options)
       .then((response) => {
         let d = response.data;
+        console.log(d);
         setData({
           base: d.base,
           clouds: d.clouds,
@@ -56,6 +59,7 @@ const GetCurrentWeather = ({ position }) => {
           weather: d.weather,
           wind: d.wind,
         });
+        setWeatherIcon(d.weather[0].icon);
       })
       .catch((error) => {
         console.error(error);
@@ -69,8 +73,10 @@ const GetCurrentWeather = ({ position }) => {
         {data && (
           <>
             <p>{data.base}</p>
-            {/* <p>{data.clouds.map(value => value)}</p> */}
           </>
+        )}
+        {weatherIcon && (
+          <img src={`http://openweathermap.org/img/wn/${weatherIcon}@2x.png`} alt="" />
         )}
       </div>
     </div>
