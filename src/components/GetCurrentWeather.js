@@ -78,9 +78,30 @@ const GetCurrentWeather = ({ position }) => {
       <div>
         {data && (
           <>
-            <p>{data.name}</p>
-            <p>{data.condition}</p>
+            <p>
+              {data.name} / {data.condition}
+            </p>
             <p>風力{data.windSpeed}</p>
+            {position.latitude !== null && (
+              <iframe
+                src={
+                  "https://www.google.com/maps?output=embed&q=" +
+                  position.latitude +
+                  "," +
+                  position.longitude +
+                  "&t=m"
+                }
+                title="maps"
+                width="600"
+                height="450"
+                style={{ border: 0 }}
+                allowFullScreen=""
+                loading="lazy"
+              ></iframe>
+            )}
+            {data.icon && (
+              <img src={`http://openweathermap.org/img/wn/${data.icon}@2x.png`} alt="" />
+            )}
             <ul>
               {Object.keys(data).map((key, index) => (
                 <li key={index}>
@@ -90,7 +111,6 @@ const GetCurrentWeather = ({ position }) => {
             </ul>
           </>
         )}
-        {data.icon && <img src={`http://openweathermap.org/img/wn/${data.icon}@2x.png`} alt="" />}
       </div>
     </div>
   );
