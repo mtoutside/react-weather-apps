@@ -25,6 +25,9 @@ const GetCurrentWeather = ({ position }) => {
     temp_min: "最低気温",
     humidity: "湿度",
     pressure: "気圧",
+    name: "名前",
+    condition: "天気",
+    icon: "アイコン",
     windDeg: "風向き",
     windSpeed: "風速",
   };
