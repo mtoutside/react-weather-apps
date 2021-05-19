@@ -4,9 +4,11 @@ import axios from "axios";
 const GetCurrentWeather = ({ position }) => {
   const apiKey = process.env.REACT_APP_X_RAPIDAPI_KEY;
   const apiHost = process.env.REACT_APP_X_RAPIDAPI_HOST;
+  const weatherApi = process.env.REACT_APP_WEATHER_API;
+  const forecastApi = process.env.REACT_APP_FORECAST_API;
   const options = {
     method: "GET",
-    url: "https://community-open-weather-map.p.rapidapi.com/weather",
+    url: weatherApi,
     params: {
       lat: position.latitude,
       lon: position.longitude,
@@ -18,10 +20,9 @@ const GetCurrentWeather = ({ position }) => {
       "x-rapidapi-host": apiHost,
     },
   };
-
   const options2 = {
     method: "GET",
-    url: "https://community-open-weather-map.p.rapidapi.com/forecast",
+    url: forecastApi,
     params: {
       lat: position.latitude,
       lon: position.longitude,
@@ -33,7 +34,6 @@ const GetCurrentWeather = ({ position }) => {
       "x-rapidapi-host": apiHost,
     },
   };
-
   const paramsName = {
     feels_like: "体感温度",
     temp: "気温",
@@ -62,8 +62,6 @@ const GetCurrentWeather = ({ position }) => {
   });
 
   const getWeatherApi = () => {
-    console.log({ position });
-
     axios
       .request(options)
       .then((response) => {
