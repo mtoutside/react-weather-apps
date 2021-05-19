@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 const ErrorText = () => <p className="App-error-text">geolocation IS NOT available</p>;
 
-const GetCurrentPos = ({position, setPosition}) => {
+const GetCurrentPos = ({ position, setPosition }) => {
   const [isOk, setIsOk] = useState(false);
   const [isPosition, setIsPosition] = useState(false);
   const [watchStatus, setWatchStatus] = useState({
