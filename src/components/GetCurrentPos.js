@@ -15,6 +15,7 @@ const GetCurrentPos = ({ position, setPosition }) => {
       setIsOk(false);
     } else {
       setIsOk(true);
+      getPos();
     }
   }, []);
 
