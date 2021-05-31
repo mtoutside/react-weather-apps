@@ -17,6 +17,7 @@ const GetCurrentPos = ({ position, setPosition }) => {
       setIsOk(true);
       getPos();
     }
+    // eslint-disable-next-line
   }, []);
 
   const getPos = () => {
