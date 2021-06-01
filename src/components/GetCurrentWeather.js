@@ -5,24 +5,9 @@ const GetCurrentWeather = ({ position }) => {
   const apiKey = process.env.REACT_APP_X_RAPIDAPI_KEY;
   const apiHost = process.env.REACT_APP_X_RAPIDAPI_HOST;
   const weatherApi = process.env.REACT_APP_WEATHER_API;
-  const forecastApi = process.env.REACT_APP_FORECAST_API;
   const options = {
     method: "GET",
     url: weatherApi,
-    params: {
-      lat: position.latitude,
-      lon: position.longitude,
-      units: "metric",
-      lang: "ja",
-    },
-    headers: {
-      "x-rapidapi-key": apiKey,
-      "x-rapidapi-host": apiHost,
-    },
-  };
-  const options2 = {
-    method: "GET",
-    url: forecastApi,
     params: {
       lat: position.latitude,
       lon: position.longitude,
@@ -80,18 +65,6 @@ const GetCurrentWeather = ({ position }) => {
           windDeg: d.wind.deg,
           windSpeed: d.wind.speed,
         });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-
-    axios
-      .request(options2)
-      .then((response) => {
-        let d = response.data;
-        console.log({ d });
-        const date = new Date(d.list[0].dt * 1000);
-        console.log(date.toLocaleString(), date.getDay());
       })
       .catch((error) => {
         console.error(error);
