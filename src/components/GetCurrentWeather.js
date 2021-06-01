@@ -99,7 +99,7 @@ const GetCurrentWeather = ({ position }) => {
   };
 
   return (
-    <div>
+    <div className="currentWeather">
       <button onClick={getWeatherApi}>get weather</button>
       <div>
         {data && (

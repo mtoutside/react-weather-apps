@@ -52,7 +52,7 @@ const GetCurrentPos = ({ position, setPosition }) => {
   const { isWatching, watchId } = watchStatus;
 
   return (
-    <div>
+    <div className="currentPos">
       {isOk ? (
         <>
           <button

@@ -1,0 +1,16 @@
+.App {
+  margin: 20px;
+}
+
+.currentPos {
+  background: #ddd;
+  border-radius: 6px;
+  padding: 20px;
+}
+
+.currentWeather {
+  background: #ccc;
+  border-radius: 6px;
+  padding: 20px;
+  margin: 40px 0 0;
+}
