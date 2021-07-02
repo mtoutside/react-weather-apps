@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { Button } from "@material-ui/core/";
 
 const GetCurrentWeather = ({ position }) => {
   const apiKey = process.env.REACT_APP_X_RAPIDAPI_KEY;
@@ -73,7 +74,9 @@ const GetCurrentWeather = ({ position }) => {
 
   return (
     <div className="currentWeather">
-      <button onClick={getWeatherApi}>get weather</button>
+      <Button variant="contained" color="primary" onClick={getWeatherApi}>
+        get weather
+      </Button>
       <div>
         {data && (
           <>

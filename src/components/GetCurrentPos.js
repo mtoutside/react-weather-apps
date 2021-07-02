@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Box, Button } from "@material-ui/core/";
 
 const ErrorText = () => <p className="App-error-text">geolocation IS NOT available</p>;
 
@@ -52,20 +53,31 @@ const GetCurrentPos = ({ position, setPosition }) => {
   const { isWatching, watchId } = watchStatus;
 
   return (
-    <div className="currentPos">
+    <Box p={2} m={2} className="currentPos">
       {isOk ? (
         <>
-          <button
+          <Button
+            variant="contained"
+            color="primary"
             onClick={() => {
               getPos();
             }}
           >
             get position
-          </button>
+          </Button>
           {isWatching ? (
-            <button onClick={() => clearPosition(watchStatus)}>Stop Watch Position</button>
+            <Button
+              variant="contained"
+              color="primary"
+              p={1}
+              onClick={() => clearPosition(watchStatus)}
+            >
+              Stop Watch Position
+            </Button>
           ) : (
-            <button onClick={startWatch}>Start Watch Position</button>
+            <Button variant="contained" color="primary" m={1} onClick={startWatch}>
+              Start Watch Position
+            </Button>
           )}
           <p>{isPosition ? "maybe ok..." : "now setting"}</p>
           <div className="">{position.latitude ? position.latitude : "loading"}</div>
@@ -82,7 +94,7 @@ const GetCurrentPos = ({ position, setPosition }) => {
       ) : (
         <ErrorText />
       )}
-    </div>
+    </Box>
   );
 };
 
