@@ -1,8 +1,16 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Button } from "@material-ui/core/";
+import { List, ListItem, ListItemText, Button, Card, CardMedia } from "@material-ui/core/";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles({
+  root: {
+    maxWidth: 600,
+  },
+});
 
 const GetCurrentWeather = ({ position }) => {
+  const classes = useStyles();
   const apiKey = process.env.REACT_APP_X_RAPIDAPI_KEY;
   const apiHost = process.env.REACT_APP_X_RAPIDAPI_HOST;
   const weatherApi = process.env.REACT_APP_WEATHER_API;
@@ -85,32 +93,40 @@ const GetCurrentWeather = ({ position }) => {
             </p>
             <p>風力{data.windSpeed}</p>
             {position.latitude !== null && (
-              <iframe
-                src={
-                  "https://www.google.com/maps?output=embed&q=" +
-                  position.latitude +
-                  "," +
-                  position.longitude +
-                  "&t=m"
-                }
-                title="maps"
-                width="600"
-                height="450"
-                style={{ border: 0 }}
-                allowFullScreen=""
-                loading="lazy"
-              ></iframe>
+              <Card className={classes.root}>
+                <CardMedia
+                  component="iframe"
+                  src={
+                    "https://www.google.com/maps?output=embed&q=" +
+                    position.latitude +
+                    "," +
+                    position.longitude +
+                    "&t=m"
+                  }
+                  width="600"
+                  height="450"
+                  title="maps"
+                  width="600"
+                  height="450"
+                  style={{ border: 0 }}
+                  allowFullScreen=""
+                  loading="lazy"
+                ></CardMedia>
+              </Card>
             )}
             {data.icon && (
               <img src={`http://openweathermap.org/img/wn/${data.icon}@2x.png`} alt="" />
             )}
-            <ul>
+            <List>
               {Object.keys(data).map((key, index) => (
-                <li key={index}>
-                  {paramsName[key]}: {data[key]}
-                </li>
+                <ListItem key={index}>
+                  <ListItemText>
+                    {" "}
+                    {paramsName[key]}: {data[key]}
+                  </ListItemText>
+                </ListItem>
               ))}
-            </ul>
+            </List>
           </>
         )}
       </div>

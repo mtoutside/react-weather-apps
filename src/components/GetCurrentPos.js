@@ -1,9 +1,22 @@
 import React, { useState, useEffect } from "react";
+import { makeStyles } from "@material-ui/core/styles";
 import { Box, Button } from "@material-ui/core/";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    background: theme.palette.grey[300],
+    borderRadius: theme.shape.borderRadius,
+    boxShadow: theme.shadows[10],
+    "& > *": {
+      margin: theme.spacing(1),
+    },
+  },
+}));
 
 const ErrorText = () => <p className="App-error-text">geolocation IS NOT available</p>;
 
 const GetCurrentPos = ({ position, setPosition }) => {
+  const classes = useStyles();
   const [isOk, setIsOk] = useState(false);
   const [isPosition, setIsPosition] = useState(false);
   const [watchStatus, setWatchStatus] = useState({
@@ -53,7 +66,7 @@ const GetCurrentPos = ({ position, setPosition }) => {
   const { isWatching, watchId } = watchStatus;
 
   return (
-    <Box p={2} m={2} className="currentPos">
+    <Box p={2} className={classes.root}>
       {isOk ? (
         <>
           <Button
@@ -66,21 +79,16 @@ const GetCurrentPos = ({ position, setPosition }) => {
             get position
           </Button>
           {isWatching ? (
-            <Button
-              variant="contained"
-              color="primary"
-              p={1}
-              onClick={() => clearPosition(watchStatus)}
-            >
+            <Button variant="contained" color="primary" onClick={() => clearPosition(watchStatus)}>
               Stop Watch Position
             </Button>
           ) : (
-            <Button variant="contained" color="primary" m={1} onClick={startWatch}>
+            <Button variant="contained" color="primary" onClick={startWatch}>
               Start Watch Position
             </Button>
           )}
           <p>{isPosition ? "maybe ok..." : "now setting"}</p>
-          <div className="">{position.latitude ? position.latitude : "loading"}</div>
+          <div>{position.latitude ? position.latitude : "loading"}</div>
           <div className="">{position.longitude ? position.longitude : "loading"}</div>
           <a href={createHref()} target="_blank" rel="noopener noreferrer">
             maps at google {createHref()}
