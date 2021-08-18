@@ -86,7 +86,7 @@ const GetCurrentWeather = ({ position }) => {
         get weather
       </Button>
       <div>
-        {data && (
+        {data.feels_like !== "" && (
           <>
             <p>
               {data.name} / {data.condition}
