@@ -45,20 +45,20 @@ const GetForecastWeather = ({ position }) => {
         let d = response.data;
         console.log({ d });
         showTimeList(d.list);
-        console.log(times);
       })
       .catch((error) => {
         console.error(error);
       });
   };
 
+  // TODO: 天気予報の結果を、配列かオブジェクトにして格納、表示をしたい
   const showTimeList = (d) => {
-    // console.log(d)
-    d.forEach(day => {
+    d.forEach((day) => {
       const date = new Date(day.dt * 1000);
       const time = date.toLocaleString();
       const week = date.getDay();
-      
+      // console.log({ time }, { week });
+
       setTimes({
         ...times,
         id: times.length,
@@ -74,12 +74,8 @@ const GetForecastWeather = ({ position }) => {
     <div className="forecastWeather">
       <button onClick={getForecastApi}>get forecast weather</button>
       {data.feels_like === "" ? <>not set</> : <>set</>}
-      {times &&
-        Object.keys(times).map((time, index) => (
-          <div key={index}>
-            {time.zikan} {time.youbi} id:{time.id}
-          </div>
-        ))}
+      <ul>{times && Object.keys(times).map((time, index) => <li key={index}>{time}</li>)}</ul>
+      <div>{ times && console.log({times}) }</div>
     </div>
   );
 };
