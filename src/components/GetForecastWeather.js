@@ -32,11 +32,7 @@ const GetForecastWeather = ({ position }) => {
     windDeg: "",
     windSpeed: "",
   });
-  const [times, setTimes] = useState({
-    id: "",
-    zikan: "",
-    youbi: "",
-  });
+  const [times, setTimes] = useState([{}]);
 
   const getForecastApi = () => {
     axios
@@ -59,12 +55,14 @@ const GetForecastWeather = ({ position }) => {
       const week = date.getDay();
       // console.log({ time }, { week });
 
-      setTimes({
+      setTimes([
         ...times,
-        id: times.length,
-        zikan: time,
-        youbi: week,
-      });
+        {
+          id: times.length,
+          zikan: time,
+          youbi: week,
+        },
+      ]);
     });
     // console.log(date.toLocaleString(), date.getDay());
     // times.push(time);
@@ -74,8 +72,15 @@ const GetForecastWeather = ({ position }) => {
     <div className="forecastWeather">
       <button onClick={getForecastApi}>get forecast weather</button>
       {data.feels_like === "" ? <>not set</> : <>set</>}
-      <ul>{times && Object.keys(times).map((time, index) => <li key={index}>{time}</li>)}</ul>
-      <div>{ times && console.log({times}) }</div>
+      <ul>
+        {/* {times && */}
+        {/*   times.map(([key, value], index) => ( */}
+        {/*     <li key={index}> */}
+        {/*       {key} : {value} */}
+        {/*     </li> */}
+        {/*   ))} */}
+      </ul>
+      {/* <div>{ times && console.log({times}) }</div> */}
     </div>
   );
 };
