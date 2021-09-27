@@ -33,6 +33,7 @@ const GetForecastWeather = ({ position }) => {
     windSpeed: "",
   });
   const [times, setTimes] = useState([]);
+  const daysOfWeekString = ["日", "月", "火", "水", "木", "金", "土"];
 
   const getForecastApi = () => {
     axios
@@ -73,7 +74,7 @@ const GetForecastWeather = ({ position }) => {
           times.map((key, index) => (
             <li key={key.id}>
               <p> zikan: {key.zikan}</p>
-              <p> youbi: {key.youbi}</p>
+              <p> youbi: {daysOfWeekString[key.youbi]}</p>
             </li>
           ))}
       </ul>
