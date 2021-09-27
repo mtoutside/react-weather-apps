@@ -32,7 +32,7 @@ const GetForecastWeather = ({ position }) => {
     windDeg: "",
     windSpeed: "",
   });
-  const [times, setTimes] = useState([{}]);
+  const [times, setTimes] = useState([]);
 
   const getForecastApi = () => {
     axios
@@ -47,40 +47,37 @@ const GetForecastWeather = ({ position }) => {
       });
   };
 
-  // TODO: 天気予報の結果を、配列かオブジェクトにして格納、表示をしたい
   const showTimeList = (d) => {
+    const timeArray = [];
     d.forEach((day) => {
       const date = new Date(day.dt * 1000);
       const time = date.toLocaleString();
       const week = date.getDay();
       // console.log({ time }, { week });
 
-      setTimes([
-        ...times,
-        {
-          id: times.length,
-          zikan: time,
-          youbi: week,
-        },
-      ]);
+      timeArray.push({
+        id: timeArray.length,
+        zikan: time,
+        youbi: week,
+      });
     });
-    // console.log(date.toLocaleString(), date.getDay());
-    // times.push(time);
+    console.log(timeArray);
+    setTimes(timeArray);
   };
 
   return (
     <div className="forecastWeather">
       <button onClick={getForecastApi}>get forecast weather</button>
-      {data.feels_like === "" ? <>not set</> : <>set</>}
       <ul>
-        {/* {times && */}
-        {/*   times.map(([key, value], index) => ( */}
-        {/*     <li key={index}> */}
-        {/*       {key} : {value} */}
-        {/*     </li> */}
-        {/*   ))} */}
+        {times &&
+          times.map((key, index) => (
+            <li key={key.id}>
+              <p> zikan: {key.zikan}</p>
+              <p> youbi: {key.youbi}</p>
+            </li>
+          ))}
       </ul>
-      {/* <div>{ times && console.log({times}) }</div> */}
+      <div>{times && console.log({ times })}</div>
     </div>
   );
 };
