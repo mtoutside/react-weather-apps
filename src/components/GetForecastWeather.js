@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { List, ListItem, ListItemText, Button } from "@material-ui/core/";
 
 const GetForecastWeather = ({ position }) => {
   const apiKey = process.env.REACT_APP_X_RAPIDAPI_KEY;
@@ -68,16 +69,20 @@ const GetForecastWeather = ({ position }) => {
 
   return (
     <div className="forecastWeather">
-      <button onClick={getForecastApi}>get forecast weather</button>
-      <ul>
+      <Button variant="contained" color="primary" onClick={getForecastApi}>
+        get forecast weather
+      </Button>
+      <List>
         {times &&
           times.map((key, index) => (
-            <li key={key.id}>
-              <p> zikan: {key.zikan}</p>
-              <p> youbi: {daysOfWeekString[key.youbi]}</p>
-            </li>
+            <ListItem key={key.id}>
+              <ListItemText>
+                zikan: {key.zikan}
+                youbi: {daysOfWeekString[key.youbi]}
+              </ListItemText>
+            </ListItem>
           ))}
-      </ul>
+      </List>
       <div>{times && console.log({ times })}</div>
     </div>
   );
