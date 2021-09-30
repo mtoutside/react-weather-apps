@@ -20,19 +20,6 @@ const GetForecastWeather = ({ position }) => {
       "x-rapidapi-host": apiHost,
     },
   };
-  const [data, setData] = useState({
-    feels_like: "",
-    temp: "",
-    temp_max: "",
-    temp_min: "",
-    humidity: "",
-    pressure: "",
-    name: "",
-    condition: "",
-    icon: "",
-    windDeg: "",
-    windSpeed: "",
-  });
   const [times, setTimes] = useState([]);
   const daysOfWeekString = ["日", "月", "火", "水", "木", "金", "土"];
 
@@ -55,7 +42,6 @@ const GetForecastWeather = ({ position }) => {
       const date = new Date(day.dt * 1000);
       const time = date.toLocaleString();
       const week = date.getDay();
-      // console.log({ time }, { week });
 
       timeArray.push({
         id: timeArray.length,
@@ -63,7 +49,6 @@ const GetForecastWeather = ({ position }) => {
         youbi: week,
       });
     });
-    console.log(timeArray);
     setTimes(timeArray);
   };
 
