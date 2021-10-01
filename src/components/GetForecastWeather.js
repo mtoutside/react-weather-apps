@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { List, ListItem, ListItemText, Button } from "@material-ui/core/";
 
@@ -52,14 +52,21 @@ const GetForecastWeather = ({ position }) => {
     setTimes(timeArray);
   };
 
+  useEffect(() => {
+    somethingWatchTimes(times);
+  },[times]);
+
+  const somethingWatchTimes = (times) => (times.length !== 0 ? "times is ok" : "times is bad");
+
   return (
     <div className="forecastWeather">
+      {somethingWatchTimes(times)}
       <Button variant="contained" color="primary" onClick={getForecastApi}>
         get forecast weather
       </Button>
       <List>
         {times &&
-          times.map((key, index) => (
+          times.map((key) => (
             <ListItem key={key.id}>
               <ListItemText>
                 zikan: {key.zikan}
