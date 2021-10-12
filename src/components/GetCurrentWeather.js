@@ -55,6 +55,7 @@ const GetCurrentWeather = ({ position }) => {
     windSpeed: "",
   });
 
+  //TODO: ここはresoponseをセットするだけにして別の関数で細かくsetDataしたほうがいいかも
   const getWeatherApi = () => {
     axios
       .request(options)
