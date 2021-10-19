@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { List, ListItem, ListItemText, Button, Card, CardMedia } from "@material-ui/core/";
 import { makeStyles } from "@material-ui/core/styles";
@@ -54,6 +54,10 @@ const GetCurrentWeather = ({ position }) => {
     windDeg: "",
     windSpeed: "",
   });
+
+  useEffect(() => {
+    getWeatherApi();
+  }, [position]);
 
   //TODO: ここはresoponseをセットするだけにして別の関数で細かくsetDataしたほうがいいかも
   const getWeatherApi = () => {
