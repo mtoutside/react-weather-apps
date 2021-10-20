@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import axios from "axios";
 import { List, ListItem, ListItemText, Button, Card, CardMedia } from "@material-ui/core/";
 import { makeStyles } from "@material-ui/core/styles";
@@ -8,39 +8,25 @@ const useStyles = makeStyles({
     maxWidth: 600,
   },
 });
+const apiKey = process.env.REACT_APP_X_RAPIDAPI_KEY;
+const apiHost = process.env.REACT_APP_X_RAPIDAPI_HOST;
+const weatherApi = process.env.REACT_APP_WEATHER_API;
+const paramsName = {
+  feels_like: "体感温度",
+  temp: "気温",
+  temp_max: "最高気温",
+  temp_min: "最低気温",
+  humidity: "湿度",
+  pressure: "気圧",
+  name: "名前",
+  condition: "天気",
+  icon: "アイコン",
+  windDeg: "風向き",
+  windSpeed: "風速",
+};
 
 const GetCurrentWeather = ({ position }) => {
   const classes = useStyles();
-  const apiKey = process.env.REACT_APP_X_RAPIDAPI_KEY;
-  const apiHost = process.env.REACT_APP_X_RAPIDAPI_HOST;
-  const weatherApi = process.env.REACT_APP_WEATHER_API;
-  const options = {
-    method: "GET",
-    url: weatherApi,
-    params: {
-      lat: position.latitude,
-      lon: position.longitude,
-      units: "metric",
-      lang: "ja",
-    },
-    headers: {
-      "x-rapidapi-key": apiKey,
-      "x-rapidapi-host": apiHost,
-    },
-  };
-  const paramsName = {
-    feels_like: "体感温度",
-    temp: "気温",
-    temp_max: "最高気温",
-    temp_min: "最低気温",
-    humidity: "湿度",
-    pressure: "気圧",
-    name: "名前",
-    condition: "天気",
-    icon: "アイコン",
-    windDeg: "風向き",
-    windSpeed: "風速",
-  };
   const [data, setData] = useState({
     feels_like: "",
     temp: "",
@@ -54,32 +40,60 @@ const GetCurrentWeather = ({ position }) => {
     windDeg: "",
     windSpeed: "",
   });
+  const [response, setResponse] = useState();
+  const [error, setError] = useState(false);
+  const setWeatherData = useCallback((response) => {
+    return setData({
+      feels_like: response.main.feels_like,
+      temp: response.main.temp,
+      temp_max: response.main.temp_max,
+      temp_min: response.main.temp_min,
+      humidity: response.main.humidity,
+      pressure: response.main.pressure,
+      name: response.name,
+      condition: response.weather[0].description,
+      icon: response.weather[0].icon,
+      windDeg: response.wind.deg,
+      windSpeed: response.wind.speed,
+    });
+  }, []);
 
-  //TODO: ここはresoponseをセットするだけにして別の関数で細かくsetDataしたほうがいいかも
-  const getWeatherApi = () => {
+  const getWeatherApi = async () => {
+    console.log("get weather called");
+    const options = {
+      method: "GET",
+      url: weatherApi,
+      params: {
+        lat: position.latitude,
+        lon: position.longitude,
+        units: "metric",
+        lang: "ja",
+      },
+      headers: {
+        "x-rapidapi-key": apiKey,
+        "x-rapidapi-host": apiHost,
+      },
+    };
     axios
       .request(options)
-      .then((response) => {
-        let d = response.data;
-        console.log(d);
-        setData({
-          feels_like: d.main.feels_like,
-          temp: d.main.temp,
-          temp_max: d.main.temp_max,
-          temp_min: d.main.temp_min,
-          humidity: d.main.humidity,
-          pressure: d.main.pressure,
-          name: d.name,
-          condition: d.weather[0].description,
-          icon: d.weather[0].icon,
-          windDeg: d.wind.deg,
-          windSpeed: d.wind.speed,
-        });
+      .then((res) => {
+        setResponse(res.data);
       })
       .catch((error) => {
         console.error(error);
+        setError(true);
       });
   };
+
+  useEffect(() => {
+    if (position.latitude !== null || position.longitude !== null) getWeatherApi();
+  }, [position]);
+
+  useEffect(() => {
+    console.log(`useEffect called`, { response });
+    if (response === undefined || error) return;
+    setWeatherData(response);
+  }, [response, error, setWeatherData]);
 
   return (
     <div className="currentWeather">
@@ -107,8 +121,6 @@ const GetCurrentWeather = ({ position }) => {
                   width="600"
                   height="450"
                   title="maps"
-                  width="600"
-                  height="450"
                   style={{ border: 0 }}
                   allowFullScreen=""
                   loading="lazy"
