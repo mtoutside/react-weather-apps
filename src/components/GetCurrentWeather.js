@@ -58,7 +58,7 @@ const GetCurrentWeather = ({ position }) => {
     });
   }, []);
 
-  const getWeatherApi = async () => {
+  const getWeatherApi = useCallback(async () => {
     console.log("get weather called");
     const options = {
       method: "GET",
@@ -83,11 +83,11 @@ const GetCurrentWeather = ({ position }) => {
         console.error(error);
         setError(true);
       });
-  };
+  }, [position.latitude, position.longitude]);
 
   useEffect(() => {
     if (position.latitude !== null || position.longitude !== null) getWeatherApi();
-  }, [position]);
+  }, [position, getWeatherApi]);
 
   useEffect(() => {
     console.log(`useEffect called`, { response });
