@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import axios from "axios";
-import { List, ListItem, ListItemText, Button, Card, CardMedia } from "@material-ui/core/";
+import { List, ListItem, ListItemText, Box, Button, Card, CardMedia } from "@material-ui/core/";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
@@ -85,6 +85,7 @@ const GetCurrentWeather = ({ position }) => {
       });
   }, [position.latitude, position.longitude]);
 
+  // 位置情報を取得したらAPI実行
   useEffect(() => {
     if (position.latitude !== null || position.longitude !== null) getWeatherApi();
   }, [position, getWeatherApi]);
@@ -104,9 +105,19 @@ const GetCurrentWeather = ({ position }) => {
         {data.feels_like !== "" && (
           <>
             <p>
-              {data.name} / {data.condition}
+              {data.name} の天気 / {data.condition} {data.temp}℃
             </p>
-            <p>風力{data.windSpeed}</p>
+            <Box className="weather__detail" display="flex">
+              <div className="weather__detailInner">
+                {data.icon && (
+                  <img src={`http://openweathermap.org/img/wn/${data.icon}@2x.png`} alt="" />
+                )}
+              </div>
+              <div className="weather__detailInner">
+                <p>最高気温: {data.temp_max}</p>
+                <p>最低気温: {data.temp_min}</p>
+              </div>
+            </Box>
             {position.latitude !== null && (
               <Card className={classes.root}>
                 <CardMedia
@@ -126,9 +137,6 @@ const GetCurrentWeather = ({ position }) => {
                   loading="lazy"
                 ></CardMedia>
               </Card>
-            )}
-            {data.icon && (
-              <img src={`http://openweathermap.org/img/wn/${data.icon}@2x.png`} alt="" />
             )}
             <List>
               {Object.keys(data).map((key, index) => (
