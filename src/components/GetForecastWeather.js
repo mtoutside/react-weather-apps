@@ -20,6 +20,11 @@ const GetForecastWeather = ({ position }) => {
       "x-rapidapi-host": apiHost,
     },
   };
+  const flexContainer = {
+    display: "flex",
+    flexDirection: "row",
+    padding: 0,
+  };
   const [times, setTimes] = useState([]);
   const daysOfWeekString = ["日", "月", "火", "水", "木", "金", "土"];
 
@@ -66,7 +71,7 @@ const GetForecastWeather = ({ position }) => {
       <Button variant="contained" color="primary" onClick={getForecastApi}>
         get forecast weather
       </Button>
-      <List>
+      <List style={flexContainer}>
         {times &&
           times.map((key) => (
             <ListItem key={key.id}>
