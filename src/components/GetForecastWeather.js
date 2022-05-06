@@ -42,11 +42,14 @@ const GetForecastWeather = ({ position }) => {
       const date = new Date(day.dt * 1000);
       const time = date.toLocaleString();
       const week = date.getDay();
+      const icon = day.weather[0].icon;
+      console.log(icon);
 
       timeArray.push({
         id: timeArray.length,
         zikan: time,
         youbi: week,
+        icon: icon,
       });
     });
     setTimes(timeArray);
@@ -54,7 +57,7 @@ const GetForecastWeather = ({ position }) => {
 
   useEffect(() => {
     somethingWatchTimes(times);
-  },[times]);
+  }, [times]);
 
   const somethingWatchTimes = (times) => (times.length !== 0 ? "times is ok" : "times is bad");
 
@@ -71,6 +74,7 @@ const GetForecastWeather = ({ position }) => {
               <ListItemText>
                 zikan: {key.zikan}
                 youbi: {daysOfWeekString[key.youbi]}
+                <img src={`http://openweathermap.org/img/wn/${key.icon}@2x.png`} alt="" />
               </ListItemText>
             </ListItem>
           ))}
