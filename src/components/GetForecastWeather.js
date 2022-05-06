@@ -43,7 +43,6 @@ const GetForecastWeather = ({ position }) => {
       const time = date.toLocaleString();
       const week = date.getDay();
       const icon = day.weather[0].icon;
-      console.log(icon);
 
       timeArray.push({
         id: timeArray.length,
