@@ -7,6 +7,9 @@
   border-radius: 6px;
   padding: 20px;
 }
+.link__external {
+  vertical-align: middle;
+}
 
 .currentWeather {
   background: #ccc;

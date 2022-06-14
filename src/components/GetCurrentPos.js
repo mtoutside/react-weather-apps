@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box, Button } from "@material-ui/core/";
+import LaunchIcon from "@material-ui/icons/Launch";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -91,7 +92,7 @@ const GetCurrentPos = ({ position, setPosition }) => {
           <div>{position.latitude ? position.latitude : "loading"}</div>
           <div className="">{position.longitude ? position.longitude : "loading"}</div>
           <a href={createHref()} target="_blank" rel="noopener noreferrer">
-            現在地
+            現在地 <LaunchIcon className="link__external" fontSize="small" />
           </a>
           <div className="mode">
             <h3>Watch Mode</h3>
