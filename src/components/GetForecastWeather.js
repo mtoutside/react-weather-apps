@@ -59,15 +59,8 @@ const GetForecastWeather = ({ position }) => {
     setTimes(timeArray);
   };
 
-  useEffect(() => {
-    somethingWatchTimes(times);
-  }, [times]);
-
-  const somethingWatchTimes = (times) => (times.length !== 0 ? "times is ok" : "times is bad");
-
   return (
     <div className="forecastWeather">
-      {somethingWatchTimes(times)}
       <Button variant="contained" color="primary" onClick={getForecastApi}>
         get forecast weather
       </Button>
