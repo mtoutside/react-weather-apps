@@ -76,8 +76,7 @@ const GetForecastWeather = ({ position }) => {
           times.map((key) => (
             <ListItem key={key.id}>
               <ListItemText>
-                zikan: {key.zikan}
-                youbi: {daysOfWeekString[key.youbi]}
+                {key.zikan}&nbsp;{daysOfWeekString[key.youbi]}
                 <img src={`http://openweathermap.org/img/wn/${key.icon}@2x.png`} alt="" />
               </ListItemText>
             </ListItem>
