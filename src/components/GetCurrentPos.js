@@ -87,11 +87,11 @@ const GetCurrentPos = ({ position, setPosition }) => {
               Start Watch Position
             </Button>
           )}
-          <p>{isPosition ? "maybe ok..." : "now setting"}</p>
+          <p>{isPosition ? "settled" : "now setting"}</p>
           <div>{position.latitude ? position.latitude : "loading"}</div>
           <div className="">{position.longitude ? position.longitude : "loading"}</div>
           <a href={createHref()} target="_blank" rel="noopener noreferrer">
-            maps at google {createHref()}
+            現在地
           </a>
           <div className="mode">
             <h3>Watch Mode</h3>
