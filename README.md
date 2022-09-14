@@ -11,6 +11,6 @@ Reactの勉強のために作ったWebアプリです。
 
 ## 技術選定
 
-- React v17.x
+- React v18.x
 - Material-ul v4.x
-- Open Weather Map API (Rapid API)
+- [Weather API](https://rapidapi.com/weatherbit/api/weather/) (Rapid API)
