@@ -12,7 +12,7 @@ const GetForecastWeather = ({ position }) => {
     params: {
       lat: position.latitude,
       lon: position.longitude,
-      units: "metric",
+      units: "M",
       lang: "ja",
     },
     headers: {
@@ -34,7 +34,7 @@ const GetForecastWeather = ({ position }) => {
       .then((response) => {
         let d = response.data;
         console.log({ d });
-        showTimeList(d.list);
+        showTimeList(d.data);
       })
       .catch((error) => {
         console.error(error);
@@ -44,16 +44,18 @@ const GetForecastWeather = ({ position }) => {
   const showTimeList = (d) => {
     const timeArray = [];
     d.forEach((day) => {
-      const date = new Date(day.dt * 1000);
+      const date = new Date(day.ts * 1000);
       const time = date.toLocaleString();
       const week = date.getDay();
-      const icon = day.weather[0].icon;
+      const icon = day.weather.icon;
+      const condition = day.weather.description;
 
       timeArray.push({
         id: timeArray.length,
         zikan: time,
         youbi: week,
         icon: icon,
+        condition: condition,
       });
     });
     setTimes(timeArray);
@@ -70,7 +72,7 @@ const GetForecastWeather = ({ position }) => {
             <ListItem key={key.id}>
               <ListItemText>
                 {key.zikan}&nbsp;{daysOfWeekString[key.youbi]}
-                <img src={`http://openweathermap.org/img/wn/${key.icon}@2x.png`} alt="" />
+                <img src={`https://www.weatherbit.io/static/img/icons/${key.icon}.png`} alt={key.condition} />
               </ListItemText>
             </ListItem>
           ))}
