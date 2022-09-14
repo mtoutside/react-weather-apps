@@ -14,8 +14,6 @@ const weatherApi = process.env.REACT_APP_WEATHER_API;
 const paramsName = {
   feels_like: "体感温度",
   temp: "気温",
-  temp_max: "最高気温",
-  temp_min: "最低気温",
   humidity: "湿度",
   pressure: "気圧",
   name: "名前",
@@ -30,8 +28,6 @@ const GetCurrentWeather = ({ position }) => {
   const [data, setData] = useState({
     feels_like: "",
     temp: "",
-    temp_max: "",
-    temp_min: "",
     humidity: "",
     pressure: "",
     name: "",
@@ -44,17 +40,15 @@ const GetCurrentWeather = ({ position }) => {
   const [error, setError] = useState(false);
   const setWeatherData = useCallback((response) => {
     return setData({
-      feels_like: response.main.feels_like,
-      temp: response.main.temp,
-      temp_max: response.main.temp_max,
-      temp_min: response.main.temp_min,
-      humidity: response.main.humidity,
-      pressure: response.main.pressure,
-      name: response.name,
-      condition: response.weather[0].description,
-      icon: response.weather[0].icon,
-      windDeg: response.wind.deg,
-      windSpeed: response.wind.speed,
+      feels_like: response.app_temp,
+      temp: response.temp,
+      humidity: response.rh,
+      pressure: response.pres,
+      name: response.city_name,
+      condition: response.weather.description,
+      icon: response.weather.icon,
+      windDeg: response.wind_cdir,
+      windSpeed: response.wind_spd,
     });
   }, []);
 
@@ -66,7 +60,7 @@ const GetCurrentWeather = ({ position }) => {
       params: {
         lat: position.latitude,
         lon: position.longitude,
-        units: "metric",
+        units: "M",
         lang: "ja",
       },
       headers: {
@@ -77,7 +71,7 @@ const GetCurrentWeather = ({ position }) => {
     axios
       .request(options)
       .then((res) => {
-        setResponse(res.data);
+        setResponse(res.data.data[0]);
       })
       .catch((error) => {
         console.error(error);
@@ -110,12 +104,10 @@ const GetCurrentWeather = ({ position }) => {
             <Box className="weather__detail" display="flex">
               <div className="weather__detailInner">
                 {data.icon && (
-                  <img src={`http://openweathermap.org/img/wn/${data.icon}@2x.png`} alt="" />
+                  <img src={`https://www.weatherbit.io/static/img/icons/${data.icon}.png`} alt={data.condition} />
                 )}
               </div>
               <div className="weather__detailInner">
-                <p>最高気温: {data.temp_max}</p>
-                <p>最低気温: {data.temp_min}</p>
               </div>
             </Box>
             {position.latitude !== null && (
