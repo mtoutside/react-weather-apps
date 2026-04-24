@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { List, ListItem, ListItemText, Box, Button, Card, CardMedia } from "@mui/material";
-const apiKey = process.env.REACT_APP_X_RAPIDAPI_KEY;
-const apiHost = process.env.REACT_APP_X_RAPIDAPI_HOST;
-const weatherApi = process.env.REACT_APP_WEATHER_API;
+const apiKey = import.meta.env.VITE_X_RAPIDAPI_KEY ?? import.meta.env.REACT_APP_X_RAPIDAPI_KEY;
+const apiHost = import.meta.env.VITE_X_RAPIDAPI_HOST ?? import.meta.env.REACT_APP_X_RAPIDAPI_HOST;
+const weatherApi = import.meta.env.VITE_WEATHER_API ?? import.meta.env.REACT_APP_WEATHER_API;
 const paramsName = {
   feels_like: "体感温度",
   temp: "気温",

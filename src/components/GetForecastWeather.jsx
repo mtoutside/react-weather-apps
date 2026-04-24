@@ -3,9 +3,9 @@ import axios from "axios";
 import { List, ListItem, ListItemText, Button } from "@mui/material";
 
 const GetForecastWeather = ({ position }) => {
-  const apiKey = process.env.REACT_APP_X_RAPIDAPI_KEY;
-  const apiHost = process.env.REACT_APP_X_RAPIDAPI_HOST;
-  const forecastApi = process.env.REACT_APP_FORECAST_API;
+  const apiKey = import.meta.env.VITE_X_RAPIDAPI_KEY ?? import.meta.env.REACT_APP_X_RAPIDAPI_KEY;
+  const apiHost = import.meta.env.VITE_X_RAPIDAPI_HOST ?? import.meta.env.REACT_APP_X_RAPIDAPI_HOST;
+  const forecastApi = import.meta.env.VITE_FORECAST_API ?? import.meta.env.REACT_APP_FORECAST_API;
   const options = {
     method: "GET",
     url: forecastApi,

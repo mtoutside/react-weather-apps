@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import GetCurrentPos from "./components/GetCurrentPos";
-import GetCurrentWeather from "./components/GetCurrentWeather";
-import GetForecastWeather from "./components/GetForecastWeather";
+import GetCurrentPos from "./components/GetCurrentPos.jsx";
+import GetCurrentWeather from "./components/GetCurrentWeather.jsx";
+import GetForecastWeather from "./components/GetForecastWeather.jsx";
 import "./App.css";
 
 function App() {
