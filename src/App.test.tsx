@@ -1,8 +1,8 @@
-import { render, screen } from '@testing-library/react';
-import App from './App';
+import { render, screen } from "@testing-library/react";
+import App from "./App";
 
-test('renders weather actions', () => {
+test("renders weather actions", () => {
   render(<App />);
-  expect(screen.getByRole('button', { name: /get weather/i })).toBeInTheDocument();
-  expect(screen.getByRole('button', { name: /get forecast weather/i })).toBeInTheDocument();
+  expect(screen.getByRole("button", { name: /get weather/i })).toBeInTheDocument();
+  expect(screen.getByRole("button", { name: /get forecast weather/i })).toBeInTheDocument();
 });

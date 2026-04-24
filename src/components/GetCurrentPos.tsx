@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { Box, Button } from "@mui/material";
 import LaunchIcon from "@mui/icons-material/Launch";
+import { Box, Button } from "@mui/material";
 import type { Dispatch, SetStateAction } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { Position } from "../App";
 
 const ErrorText = () => <p className="App-error-text">geolocation IS NOT available</p>;
@@ -24,6 +24,15 @@ const GetCurrentPos = ({ position, setPosition }: GetCurrentPosProps) => {
     watchId: null,
   });
 
+  const getPos = useCallback(() => {
+    navigator.geolocation.getCurrentPosition((currentPosition) => {
+      const latitude = currentPosition.coords.latitude;
+      const longitude = currentPosition.coords.longitude;
+      setPosition({ latitude, longitude });
+      setIsPosition(true);
+    });
+  }, [setPosition]);
+
   useEffect(() => {
     if (!navigator.geolocation) {
       setIsOk(false);
@@ -31,17 +40,7 @@ const GetCurrentPos = ({ position, setPosition }: GetCurrentPosProps) => {
       setIsOk(true);
       getPos();
     }
-    // eslint-disable-next-line
-  }, []);
-
-  const getPos = () => {
-    navigator.geolocation.getCurrentPosition((currentPosition) => {
-      const latitude = currentPosition.coords.latitude;
-      const longitude = currentPosition.coords.longitude;
-      setPosition({ latitude, longitude });
-      setIsPosition(true);
-    });
-  };
+  }, [getPos]);
 
   const startWatch = () => {
     console.log("watch start");

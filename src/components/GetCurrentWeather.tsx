@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useCallback } from "react";
-import axios from "axios";
+import { Box, Button, Card, List, ListItem, ListItemText } from "@mui/material";
 import type { AxiosResponse } from "axios";
-import { List, ListItem, ListItemText, Box, Button, Card } from "@mui/material";
+import axios from "axios";
+import { useCallback, useEffect, useState } from "react";
 import type { Position } from "../App";
 
 const apiKey = import.meta.env.VITE_X_RAPIDAPI_KEY ?? import.meta.env.REACT_APP_X_RAPIDAPI_KEY;
@@ -139,7 +139,10 @@ const GetCurrentWeather = ({ position }: GetCurrentWeatherProps) => {
             <Box className="weather__detail" display="flex">
               <div className="weather__detailInner">
                 {data.icon && (
-                  <img src={`https://www.weatherbit.io/static/img/icons/${data.icon}.png`} alt={data.condition} />
+                  <img
+                    src={`https://www.weatherbit.io/static/img/icons/${data.icon}.png`}
+                    alt={data.condition}
+                  />
                 )}
               </div>
               <div className="weather__detailInner"></div>

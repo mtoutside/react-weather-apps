@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import GetCurrentPos from "./components/GetCurrentPos";
 import GetCurrentWeather from "./components/GetCurrentWeather";
 import GetForecastWeather from "./components/GetForecastWeather";

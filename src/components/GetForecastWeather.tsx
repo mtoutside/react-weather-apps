@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import axios from "axios";
+import { Button, List, ListItem, ListItemText } from "@mui/material";
 import type { AxiosResponse } from "axios";
-import { List, ListItem, ListItemText, Button } from "@mui/material";
+import axios from "axios";
 import type { CSSProperties } from "react";
+import { useState } from "react";
 import type { Position } from "../App";
 
 interface ForecastApiEntry {
@@ -100,15 +100,17 @@ const GetForecastWeather = ({ position }: GetForecastWeatherProps) => {
         get forecast weather
       </Button>
       <List style={flexContainer}>
-        {times &&
-          times.map((time) => (
-            <ListItem key={time.id}>
-              <ListItemText>
-                {time.zikan}&nbsp;{daysOfWeekString[time.youbi]}
-                <img src={`https://www.weatherbit.io/static/img/icons/${time.icon}.png`} alt={time.condition} />
-              </ListItemText>
-            </ListItem>
-          ))}
+        {times.map((time) => (
+          <ListItem key={time.id}>
+            <ListItemText>
+              {time.zikan}&nbsp;{daysOfWeekString[time.youbi]}
+              <img
+                src={`https://www.weatherbit.io/static/img/icons/${time.icon}.png`}
+                alt={time.condition}
+              />
+            </ListItemText>
+          </ListItem>
+        ))}
       </List>
     </div>
   );
