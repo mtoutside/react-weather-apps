@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
-import { List, ListItem, ListItemText, Button } from "@material-ui/core/";
+import { List, ListItem, ListItemText, Button } from "@mui/material";
 
 const GetForecastWeather = ({ position }) => {
   const apiKey = process.env.REACT_APP_X_RAPIDAPI_KEY;
@@ -33,7 +33,6 @@ const GetForecastWeather = ({ position }) => {
       .request(options)
       .then((response) => {
         let d = response.data;
-        console.log({ d });
         showTimeList(d.data);
       })
       .catch((error) => {
@@ -77,7 +76,6 @@ const GetForecastWeather = ({ position }) => {
             </ListItem>
           ))}
       </List>
-      <div>{times && console.log({ times })}</div>
     </div>
   );
 };

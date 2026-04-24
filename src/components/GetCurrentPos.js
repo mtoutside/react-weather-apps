@@ -1,23 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { Box, Button } from "@material-ui/core/";
-import LaunchIcon from "@material-ui/icons/Launch";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    background: theme.palette.grey[300],
-    borderRadius: theme.shape.borderRadius,
-    boxShadow: theme.shadows[10],
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
-}));
+import { Box, Button } from "@mui/material";
+import LaunchIcon from "@mui/icons-material/Launch";
 
 const ErrorText = () => <p className="App-error-text">geolocation IS NOT available</p>;
 
 const GetCurrentPos = ({ position, setPosition }) => {
-  const classes = useStyles();
   const [isOk, setIsOk] = useState(false);
   const [isPosition, setIsPosition] = useState(false);
   const [watchStatus, setWatchStatus] = useState({
@@ -60,14 +47,24 @@ const GetCurrentPos = ({ position, setPosition }) => {
   const createHref = () =>
     `https://www.google.com/maps/@${position.latitude},${position.longitude},16z`;
 
-  const clearPosition = (watchStatus) => {
+  const clearPosition = () => {
     navigator.geolocation.clearWatch(watchId);
     setWatchStatus({ isWatching: false, watchId });
   };
   const { isWatching, watchId } = watchStatus;
 
   return (
-    <Box p={2} className={classes.root}>
+    <Box
+      p={2}
+      sx={{
+        backgroundColor: "grey.300",
+        borderRadius: 1,
+        boxShadow: 10,
+        "& > *": {
+          m: 1,
+        },
+      }}
+    >
       {isOk ? (
         <>
           <Button
@@ -80,7 +77,7 @@ const GetCurrentPos = ({ position, setPosition }) => {
             get position
           </Button>
           {isWatching ? (
-            <Button variant="contained" color="primary" onClick={() => clearPosition(watchStatus)}>
+            <Button variant="contained" color="primary" onClick={clearPosition}>
               Stop Watch Position
             </Button>
           ) : (

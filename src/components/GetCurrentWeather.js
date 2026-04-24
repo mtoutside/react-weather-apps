@@ -1,13 +1,6 @@
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import { List, ListItem, ListItemText, Box, Button, Card, CardMedia } from "@material-ui/core/";
-import { makeStyles } from "@material-ui/core/styles";
-
-const useStyles = makeStyles({
-  root: {
-    maxWidth: 600,
-  },
-});
+import { List, ListItem, ListItemText, Box, Button, Card, CardMedia } from "@mui/material";
 const apiKey = process.env.REACT_APP_X_RAPIDAPI_KEY;
 const apiHost = process.env.REACT_APP_X_RAPIDAPI_HOST;
 const weatherApi = process.env.REACT_APP_WEATHER_API;
@@ -24,7 +17,6 @@ const paramsName = {
 };
 
 const GetCurrentWeather = ({ position }) => {
-  const classes = useStyles();
   const [data, setData] = useState({
     feels_like: "",
     temp: "",
@@ -53,7 +45,6 @@ const GetCurrentWeather = ({ position }) => {
   }, []);
 
   const getWeatherApi = useCallback(async () => {
-    console.log("get weather called");
     const options = {
       method: "GET",
       url: weatherApi,
@@ -85,7 +76,6 @@ const GetCurrentWeather = ({ position }) => {
   }, [position, getWeatherApi]);
 
   useEffect(() => {
-    console.log(`useEffect called`, { response });
     if (response === undefined || error) return;
     setWeatherData(response);
   }, [response, error, setWeatherData]);
@@ -107,11 +97,10 @@ const GetCurrentWeather = ({ position }) => {
                   <img src={`https://www.weatherbit.io/static/img/icons/${data.icon}.png`} alt={data.condition} />
                 )}
               </div>
-              <div className="weather__detailInner">
-              </div>
+              <div className="weather__detailInner"></div>
             </Box>
             {position.latitude !== null && (
-              <Card className={classes.root}>
+              <Card sx={{ maxWidth: 600 }}>
                 <CardMedia
                   component="iframe"
                   src={
