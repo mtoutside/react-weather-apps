@@ -1,13 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { Box, Button } from "@mui/material";
 import LaunchIcon from "@mui/icons-material/Launch";
+import type { Dispatch, SetStateAction } from "react";
+import type { Position } from "../App";
 
 const ErrorText = () => <p className="App-error-text">geolocation IS NOT available</p>;
 
-const GetCurrentPos = ({ position, setPosition }) => {
+interface GetCurrentPosProps {
+  position: Position;
+  setPosition: Dispatch<SetStateAction<Position>>;
+}
+
+interface WatchStatus {
+  isWatching: boolean;
+  watchId: number | null;
+}
+
+const GetCurrentPos = ({ position, setPosition }: GetCurrentPosProps) => {
   const [isOk, setIsOk] = useState(false);
   const [isPosition, setIsPosition] = useState(false);
-  const [watchStatus, setWatchStatus] = useState({
+  const [watchStatus, setWatchStatus] = useState<WatchStatus>({
     isWatching: false,
     watchId: null,
   });
@@ -23,9 +35,9 @@ const GetCurrentPos = ({ position, setPosition }) => {
   }, []);
 
   const getPos = () => {
-    navigator.geolocation.getCurrentPosition((position) => {
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
+    navigator.geolocation.getCurrentPosition((currentPosition) => {
+      const latitude = currentPosition.coords.latitude;
+      const longitude = currentPosition.coords.longitude;
       setPosition({ latitude, longitude });
       setIsPosition(true);
     });
@@ -33,14 +45,13 @@ const GetCurrentPos = ({ position, setPosition }) => {
 
   const startWatch = () => {
     console.log("watch start");
-    const watchId = navigator.geolocation.watchPosition((position) => {
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
+    const nextWatchId = navigator.geolocation.watchPosition((currentPosition) => {
+      const latitude = currentPosition.coords.latitude;
+      const longitude = currentPosition.coords.longitude;
       setPosition({ latitude, longitude });
       setIsPosition(true);
-      createHref();
 
-      setWatchStatus({ isWatching: true, watchId });
+      setWatchStatus({ isWatching: true, watchId: nextWatchId });
     });
   };
 
@@ -48,8 +59,10 @@ const GetCurrentPos = ({ position, setPosition }) => {
     `https://www.google.com/maps/@${position.latitude},${position.longitude},16z`;
 
   const clearPosition = () => {
-    navigator.geolocation.clearWatch(watchId);
-    setWatchStatus({ isWatching: false, watchId });
+    if (watchId !== null) {
+      navigator.geolocation.clearWatch(watchId);
+    }
+    setWatchStatus({ isWatching: false, watchId: null });
   };
   const { isWatching, watchId } = watchStatus;
 

@@ -1,10 +1,52 @@
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import { List, ListItem, ListItemText, Box, Button, Card, CardMedia } from "@mui/material";
+import type { AxiosResponse } from "axios";
+import { List, ListItem, ListItemText, Box, Button, Card } from "@mui/material";
+import type { Position } from "../App";
+
 const apiKey = import.meta.env.VITE_X_RAPIDAPI_KEY ?? import.meta.env.REACT_APP_X_RAPIDAPI_KEY;
 const apiHost = import.meta.env.VITE_X_RAPIDAPI_HOST ?? import.meta.env.REACT_APP_X_RAPIDAPI_HOST;
 const weatherApi = import.meta.env.VITE_WEATHER_API ?? import.meta.env.REACT_APP_WEATHER_API;
-const paramsName = {
+
+const getRequiredEnv = (value: string | undefined, name: string): string => {
+  if (!value) {
+    throw new Error(`${name} is not configured`);
+  }
+
+  return value;
+};
+
+interface WeatherApiEntry {
+  app_temp: number;
+  temp: number;
+  rh: number;
+  pres: number;
+  city_name: string;
+  weather: {
+    description: string;
+    icon: string;
+  };
+  wind_cdir: string;
+  wind_spd: number;
+}
+
+interface WeatherData {
+  feels_like: number | "";
+  temp: number | "";
+  humidity: number | "";
+  pressure: number | "";
+  name: string;
+  condition: string;
+  icon: string;
+  windDeg: string;
+  windSpeed: number | "";
+}
+
+interface GetCurrentWeatherProps {
+  position: Position;
+}
+
+const paramsName: Record<keyof WeatherData, string> = {
   feels_like: "体感温度",
   temp: "気温",
   humidity: "湿度",
@@ -16,8 +58,8 @@ const paramsName = {
   windSpeed: "風速",
 };
 
-const GetCurrentWeather = ({ position }) => {
-  const [data, setData] = useState({
+const GetCurrentWeather = ({ position }: GetCurrentWeatherProps) => {
+  const [data, setData] = useState<WeatherData>({
     feels_like: "",
     temp: "",
     humidity: "",
@@ -28,26 +70,29 @@ const GetCurrentWeather = ({ position }) => {
     windDeg: "",
     windSpeed: "",
   });
-  const [response, setResponse] = useState();
+  const [response, setResponse] = useState<WeatherApiEntry>();
   const [error, setError] = useState(false);
-  const setWeatherData = useCallback((response) => {
+  const setWeatherData = useCallback((nextResponse: WeatherApiEntry) => {
     return setData({
-      feels_like: response.app_temp,
-      temp: response.temp,
-      humidity: response.rh,
-      pressure: response.pres,
-      name: response.city_name,
-      condition: response.weather.description,
-      icon: response.weather.icon,
-      windDeg: response.wind_cdir,
-      windSpeed: response.wind_spd,
+      feels_like: nextResponse.app_temp,
+      temp: nextResponse.temp,
+      humidity: nextResponse.rh,
+      pressure: nextResponse.pres,
+      name: nextResponse.city_name,
+      condition: nextResponse.weather.description,
+      icon: nextResponse.weather.icon,
+      windDeg: nextResponse.wind_cdir,
+      windSpeed: nextResponse.wind_spd,
     });
   }, []);
 
   const getWeatherApi = useCallback(async () => {
+    const resolvedWeatherApi = getRequiredEnv(weatherApi, "VITE_WEATHER_API");
+    const resolvedApiKey = getRequiredEnv(apiKey, "VITE_X_RAPIDAPI_KEY");
+    const resolvedApiHost = getRequiredEnv(apiHost, "VITE_X_RAPIDAPI_HOST");
     const options = {
       method: "GET",
-      url: weatherApi,
+      url: resolvedWeatherApi,
       params: {
         lat: position.latitude,
         lon: position.longitude,
@@ -55,17 +100,17 @@ const GetCurrentWeather = ({ position }) => {
         lang: "ja",
       },
       headers: {
-        "x-rapidapi-key": apiKey,
-        "x-rapidapi-host": apiHost,
+        "x-rapidapi-key": resolvedApiKey,
+        "x-rapidapi-host": resolvedApiHost,
       },
     };
     axios
       .request(options)
-      .then((res) => {
+      .then((res: AxiosResponse<{ data: WeatherApiEntry[] }>) => {
         setResponse(res.data.data[0]);
       })
-      .catch((error) => {
-        console.error(error);
+      .catch((requestError) => {
+        console.error(requestError);
         setError(true);
       });
   }, [position.latitude, position.longitude]);
@@ -101,7 +146,7 @@ const GetCurrentWeather = ({ position }) => {
             </Box>
             {position.latitude !== null && (
               <Card sx={{ maxWidth: 600 }}>
-                <CardMedia
+                <Box
                   component="iframe"
                   src={
                     "https://www.google.com/maps?output=embed&q=" +
@@ -114,16 +159,15 @@ const GetCurrentWeather = ({ position }) => {
                   height="450"
                   title="maps"
                   style={{ border: 0 }}
-                  allowFullScreen=""
+                  allowFullScreen
                   loading="lazy"
-                ></CardMedia>
+                />
               </Card>
             )}
             <List>
-              {Object.keys(data).map((key, index) => (
-                <ListItem key={index}>
+              {(Object.keys(data) as Array<keyof WeatherData>).map((key) => (
+                <ListItem key={key}>
                   <ListItemText>
-                    {" "}
                     {paramsName[key]}: {data[key]}
                   </ListItemText>
                 </ListItem>
