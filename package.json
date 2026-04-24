@@ -4,8 +4,8 @@
   "private": true,
   "packageManager": "pnpm@9.0.6",
   "engines": {
-    "node": ">=20.19.0",
-    "pnpm": "9.0.6"
+    "node": ">=22.12 <23",
+    "pnpm": ">=9 <10"
   },
   "dependencies": {
     "@emotion/react": "11.14.0",
